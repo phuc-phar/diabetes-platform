@@ -2,16 +2,17 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function App() {
+
   const fields = [
     { name: "Pregnancies", unit: "times" },
     { name: "Glucose", unit: "mg/dL" },
     { name: "BloodPressure", unit: "mmHg" },
     { name: "SkinThickness", unit: "mm" },
-    { name: "Insulin", unit: "microU/mL" },
-    { name: "BMI", unit: "kg/m2" },
+    { name: "Insulin", unit: "µU/mL" },
+    { name: "BMI", unit: "kg/m²" },
     { name: "DiabetesPedigreeFunction", unit: "score" },
-    { name: "Age", unit: "year" }
-];
+    { name: "Age", unit: "years" }
+  ];
 
   const [form, setForm] = useState({
     Pregnancies: 2,
@@ -34,74 +35,70 @@ export default function App() {
   };
 
   const predict = async () => {
-
-    try {
-
-      const res = await axios.post(
-        "https://diabetes-platform-2.onrender.com/predict",
-        form
-      );
-
-      setResult(res.data);
-
-    } catch (err) {
-      console.error(err);
-      alert("API Error");
-    }
+    const res = await axios.post(
+      "https://diabetes-platform-2.onrender.com/predict",
+      form
+    );
+    setResult(res.data);
   };
 
   return (
-    <div style={{
-      padding: 30,
-      fontFamily: "Arial"
-    }}>
+    <div style={{ padding: 30, fontFamily: "Arial" }}>
 
-      <h1>Diabetes Risk Predictor</h1>
+      <h1>🧬 Diabetes Risk Predictor</h1>
 
-      {Object.keys(form).map((key) => (
-        <div key={key} style={{ marginBottom: 10 }}>
+      {/* INPUT FORM */}
+      <div style={{ marginTop: 20 }}>
 
-          <label>{key}</label>
+        {fields.map((f) => (
+          <div key={f.name} style={{ marginBottom: 12 }}>
 
-          <input
-            type="number"
-            name={key}
-            value={form[key]}
-            onChange={handleChange}
-            style={{
-              marginLeft: 10,
-              padding: 5
-            }}
-          />
+            <label style={{ width: 260, display: "inline-block" }}>
+              {f.name}
+            </label>
 
-        </div>
-      ))}
+            <input
+              type="number"
+              name={f.name}
+              value={form[f.name]}
+              onChange={handleChange}
+              style={{
+                padding: 6,
+                width: 120
+              }}
+            />
+
+            <span style={{ marginLeft: 10, color: "gray" }}>
+              {f.unit}
+            </span>
+
+          </div>
+        ))}
+
+      </div>
 
       <button
         onClick={predict}
         style={{
+          marginTop: 20,
           padding: 10,
-          marginTop: 20
+          background: "#1976d2",
+          color: "white",
+          border: "none",
+          borderRadius: 6
         }}
       >
-        Predict
+        Predict Risk
       </button>
 
+      {/* RESULT */}
       {result && (
         <div style={{ marginTop: 30 }}>
+
           <h2>Result</h2>
 
-          <p>
-            Risk Probability:
-            {" "}
-            {result.risk_probability}
-          </p>
-
-          <p>
-            Risk Level:
-            {" "}
-            {result.risk_level}
-          </p>
+          <p>Risk Probability: {result.risk_probability}</p>
+          <p>Risk Level: {result.risk_level}</p>
 
         </div>
       )}
