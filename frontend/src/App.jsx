@@ -28,7 +28,7 @@ export default function App() {
     try {
 
       const res = await axios.post(
-        "https://diabetes-platform-2.onrender.com",
+        "https://diabetes-platform-2.onrender.com/predict",
         form
       );
 
