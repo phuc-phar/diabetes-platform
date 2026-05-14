@@ -2,6 +2,16 @@ import { useState } from "react";
 import axios from "axios";
 
 export default function App() {
+  const fields = [
+    { name: "Pregnancies", unit: "times" },
+    { name: "Glucose", unit: "mg/dL" },
+    { name: "BloodPressure", unit: "mmHg" },
+    { name: "SkinThickness", unit: "mm" },
+    { name: "Insulin", unit: "microU/mL" },
+    { name: "BMI", unit: "kg/m2" },
+    { name: "DiabetesPedigreeFunction", unit: "score" },
+    { name: "Age", unit: "year" }
+];
 
   const [form, setForm] = useState({
     Pregnancies: 2,
